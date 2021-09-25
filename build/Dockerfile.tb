@@ -1,0 +1,7 @@
+FROM python:3.8.8-slim
+
+RUN python -m pip install -U pip
+RUN python -m pip install --no-cache-dir tensorboard
+EXPOSE 8080
+
+ENTRYPOINT tensorboard --logdir=${TENSORBOARD_DIR} --port=8080 --host 0.0.0.0

@@ -1,0 +1,31 @@
+FROM pytorch/pytorch:1.9.0-cuda11.1-cudnn8-runtime
+
+RUN apt-get update --fix-missing && apt-get install -y \
+    git \
+    git-core \ 
+    python3-pip \
+    unzip \
+    vim \
+    wget \
+    zip \
+    ffmpeg \
+    libsm6 \
+    libxext6
+
+WORKDIR /workspace
+COPY requirements.txt .
+
+RUN pip3 install -r requirements.txt
+RUN pip3 uninstall jedi -y
+RUN pip3 install \
+    torchvision==0.10.0+cu111 \
+    -f https://download.pytorch.org/whl/torch_stable.html
+
+RUN git clone https://github.com/ultralytics/yolov5
+
+RUN git clone https://github.com/gdlg/simple-waymo-open-dataset-reader.git && \
+    cd simple-waymo-open-dataset-reader && pip3 install .
+
+ENV PYTHONPATH "${PYTHONPATH}:/workspace/yolov5"
+
+ENTRYPOINT ["jupyter-notebook", "--allow-root", "--ip=0.0.0.0"]
