@@ -22,8 +22,8 @@ def process_waymo_file(source_file: Path, dest_dir: Path,
     data = []
     datafile = WaymoDataFileReader(source_file)
     source_file_id = re.findall('-([0-9_]+)_w', source_file.name)[0]
-    (dest_dir / 'images').mkdir(parents=True, exist_ok=True)
-    (dest_dir / 'labels').mkdir(parents=True, exist_ok=True)
+    (dest_dir / 'images' / source_file_id).mkdir(parents=True, exist_ok=True)
+    (dest_dir / 'labels' / source_file_id).mkdir(parents=True, exist_ok=True)
 
     for frame_idx, frame in enumerate(datafile):
         annotations = filter_container(frame.camera_labels)
@@ -35,12 +35,12 @@ def process_waymo_file(source_file: Path, dest_dir: Path,
         width = calibration.width
         height = calibration.height
 
-        image_id = source_file_id + ':' + str(frame_idx)
-        image_path = dest_dir / 'images' / image_id
+        image_id = source_file_id + '/' + str(frame_idx)
+        image_path = dest_dir / 'images' / source_file_id / f'{frame_idx}.jpg'
         with open(image_path, 'wb') as fid:
             fid.write(img.image)
 
-        annot_path = dest_dir / 'labels' / image_id
+        annot_path = dest_dir / 'labels' / source_file_id / f'{frame_idx}.txt'
         annot_fid = open(annot_path, 'w')
 
         for annot in annotations.labels:
@@ -82,10 +82,12 @@ if __name__ == '__main__':
         data.extend(
             process_waymo_file(source_file, dest_dir, label_map)
         )
-        break
 
     columns = ['image_path', 'image_id', 'height', 'width', 'category_id',
                'xmin', 'ymin', 'xmax', 'ymax', 'scale', 'aspect_ratio']
-
     df = pd.DataFrame(data=data, columns=columns)
     df.to_pickle(dest_dir / 'df_annotations.pkl')
+
+    image_paths = df.image_path.unique()
+    with open(dest_dir / 'all_imgs.txt', 'w') as fid:
+        fid.write('\n'.join(image_paths))
