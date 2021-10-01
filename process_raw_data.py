@@ -89,5 +89,5 @@ if __name__ == '__main__':
     df.to_pickle(dest_dir / 'df_annotations.pkl')
 
     image_paths = df.image_path.unique()
-    with open(dest_dir / 'all_imgs.txt', 'w') as fid:
+    with open(dest_dir / 'splits/all_imgs.txt', 'w') as fid:
         fid.write('\n'.join(image_paths))

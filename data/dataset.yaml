@@ -1,0 +1,8 @@
+path: /workspace/project/data/splits  # dataset root dir
+train: train_imgs.txt
+val: val_imgs.txt
+test: test_imgs.txt
+
+# Classes
+nc: 3
+names: ["vehicle", "pedestrian", "cyclist"]
