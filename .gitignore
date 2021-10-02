@@ -4,7 +4,7 @@ __pycache__
 data/images
 data/labels
 *.cache
-*.png
-*.jpg
+runs/train/*/*.png
+runs/train/*/*.jpg
 last.pt
 results.csv
