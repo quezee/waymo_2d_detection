@@ -4,3 +4,7 @@ __pycache__
 data/images
 data/labels
 *.cache
+*.png
+*.jpg
+last.pt
+results.csv
