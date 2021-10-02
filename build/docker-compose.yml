@@ -12,11 +12,11 @@ services:
         runtime: nvidia
         shm_size: '2gb'
 
-    # tensorboard:
-    #     image: tensorboard
-    #     environment:
-    #         TENSORBOARD_DIR: /workspace/project/training/sgd_1cycle_640_12/logs
-    #     volumes:
-    #     - ~/nd013c1_pytorch:/workspace/project/
-    #     ports:
-    #     - 6801:8080
+    tensorboard:
+        image: tensorboard
+        environment:
+            TENSORBOARD_DIR: /workspace/project/runs/train
+        volumes:
+        - ~/nd013c1_yolo:/workspace/project/
+        ports:
+        - 6801:8080
