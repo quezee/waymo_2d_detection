@@ -2,11 +2,11 @@ python /workspace/yolov5/train.py \
     --weights /workspace/pretrained-models/yolov5m.pt \
     --data data/dataset.yaml \
     --hyp hyp.yaml \
-    --epochs 21 \
-    --batch-size 14 \
-    --imgsz 1280 \
+    --epochs 40 \
+    --batch-size 10 \
+    --imgsz 1500 \
     --device 0 \
     --workers 4 \
     --save_period 2 \
     --freeze 10 \
-    --name model02
+    --name model03

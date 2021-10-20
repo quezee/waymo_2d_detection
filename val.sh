@@ -1,6 +1,6 @@
 python /workspace/yolov5/val.py \
-    --data /workspace/project/data/dataset.yaml \
-    --weights /workspace/project/runs/train/model02/weights/best.pt \
+    --data data/dataset.yaml \
+    --weights runs/train/model02/weights/best.pt \
     --batch-size 14 \
     --imgsz 1280 \
     --conf-thres 0.363 \
