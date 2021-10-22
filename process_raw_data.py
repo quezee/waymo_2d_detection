@@ -1,7 +1,7 @@
 import argparse
 import re
 from pathlib import Path
-from typing import List, Union
+from typing import List, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -14,11 +14,19 @@ from google.protobuf.pyext._message import RepeatedCompositeContainer
 def filter_container(container: RepeatedCompositeContainer,
                      camera_name: int = CameraName.FRONT) -> \
                 Union[CameraImage, CameraCalibration, CameraLabels]:
+    '''
+    Extracts data from RepeatedCompositeContainer according to given
+    camera_name.
+    '''
     container_filt = filter(lambda x: x.name == camera_name, container)
     return next(container_filt)
 
 def process_waymo_file(source_file: Path, dest_dir: Path,
-                       label_map: dict) -> List:
+                       label_map: dict) -> List[Tuple]:
+    '''
+    Dumps each frame of Waymo TFR file as .jpg and .txt
+    (for annotations), also returning descriptive table for EDA.
+    '''
     data = []
     datafile = WaymoDataFileReader(source_file)
     source_file_id = re.findall('-([0-9_]+)_w', source_file.name)[0]
@@ -65,7 +73,7 @@ def process_waymo_file(source_file: Path, dest_dir: Path,
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description='Convert Waymo dataset to YOLO compatible format'
+        description='Convert Waymo dataset to YOLOv5 compatible format'
     )
     parser.add_argument('--source_dir', default='/mnt/data',
                         help='path to Waymo OD directory')
