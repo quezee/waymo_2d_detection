@@ -45,3 +45,5 @@ Adam optimizer and mixup augmentation appeared to be the most deteriorating non-
 <br><img src="runs/val/model03/confusion_matrix.png" width="650" height="500"><br>
 I've tried to fight it by tuning focal loss gamma (to impose more weight on cyclist objects), but it didn't help.<br>
 My train set contains only 2k cyclists (while 255k and 73k of vehicles and pedestrians respectively), so I guess there's not much to do about it besides extending train set.
+
+You can visually estimate inference quality on image examples at [/runs/val/model03](https://github.com/quezee/waymo_2d_detection/tree/master/runs/val/model03).
