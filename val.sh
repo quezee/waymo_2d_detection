@@ -1,11 +1,12 @@
 python /workspace/yolov5/val.py \
     --data data/dataset.yaml \
-    --weights runs/train/model02/weights/best.pt \
-    --batch-size 14 \
-    --imgsz 1280 \
-    --conf-thres 0.363 \
+    --weights runs/train/model03/weights/best.pt \
+    --batch-size 10 \
+    --imgsz 1500 \
+    --conf-thres 0.312 \
     --iou-thres 0.6 \
     --task test \
     --device 0 \
     --verbose \
-    --name model02
+    --project /workspace/project/runs/val \
+    --name model03
