@@ -96,6 +96,8 @@ if __name__ == '__main__':
     df = pd.DataFrame(data=data, columns=columns)
     df.to_pickle(dest_dir / 'df_annotations.pkl')
 
+    np.random.seed(1)
     image_paths = df.image_path.unique()
-    with open(dest_dir / 'splits/all_imgs.txt', 'w') as fid:
+    image_paths = np.random.choice(image_paths, 10, replace=False)
+    with open(dest_dir / 'splits/eda_imgs.txt', 'w') as fid:
         fid.write('\n'.join(image_paths))
