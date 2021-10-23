@@ -19,19 +19,22 @@ After launching it with [docker-compose.yml](https://github.com/quezee/nd013c1_y
 ![](pics/train_sample.png)<br>
 Visual and statistical inspection of data is conducted in [Exploratory Data Analysis.ipynb](https://github.com/quezee/nd013c1_yolo/blob/master/Exploratory%20Data%20Analysis.ipynb) (it may not load right away on github page, just reload until it appears). Also cross-validation split with its justification is done there.
 
+TFR source files contain sequential frames (~200 each), which implies cross-val split should be conducted by source files, not by frames (to avoid cheating).<br>
 Here we deal with 3 classes: `vehicle, pedestrian, cyclist`, which are hugely imbalanced.
 <br>**Class balance**
 <br><img src="pics/class_balance.png" width="350" height="220"><br>
-Only 0.57% of objects are `cyclist`. What is more, their distribution across TFR source files is very skewed.
+Only 0.57% of objects are `cyclist`. What is more, their distribution across source files is very skewed.
 <br>**Cyclists per source file distribution**
 <br><img src="pics/cyclists_per_file.png" width="350" height="220"><br>
-Which suggests we should not rely on random cross-val splits, but rather stratify them by this class.<br>
+Which suggests we should not rely on random cross-val splits, but rather stratify by `cyclist` class (to ensure its representation in each split).<br>
 With this approach I got the following class-split distribution:
 <br>**Class balance by split, %**
 <br><img src="pics/split.png" width="200" height="150"><br>
 
 ## Training runs
-All model iterations were trained with frozen backbone and tested on original 1280x1920 resolution.
+All model iterations were trained with frozen backbone and tested on original 1280x1920 resolution.<br>
+For almost all runs I used YOLOv5m (medium sized) version of the model. I also tried YOLOv5m6 once, but score happened to be lower.<br>
+My GPU was GeForce RTX 3060 TI (8Gb).
 - [model01](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model01): baseline run with all default parameters suggested in [YOLOv5 repo](https://github.com/ultralytics/yolov5). **Test mAP@.5: 0.678**.
 - [model02](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model02): increased image size from 640 to 1280. **Test mAP@.5: 0.711**.
 - [model03](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model03): here I've done lots of tweaking by numerous runs with different optimizers, learning rates, regularization strength, augmentations and even tried heavier version of YOLOv5 (which didn't help). I've also increased image size to 1500. **Test mAP@.5:**.
