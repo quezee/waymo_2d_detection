@@ -31,14 +31,20 @@ With this approach I got the following class-split distribution:
 <br><img src="pics/split.png" width="200" height="150"><br>
 
 ## Training runs
-- [model01](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model01): baseline run with all default parameters suggested in [YOLOv5 repo](https://github.com/ultralytics/yolov5). **Test mAP@.5: 0.575**.
-- [model02](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model02): increased image size from 640 to 1280. **Test mAP@.5: 0.66**.
-- [model03](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model03): here I've done lots of tweaking by numerous runs with different optimizers, learning rates, regularization strength, augmentations and even tried heavier version of YOLOv5 (which didn't help). I've also increased image size to 1500. **Test mAP@.5: 0.685**.
+All model iterations were trained with frozen backbone and tested on original 1280x1920 resolution.
+- [model01](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model01): baseline run with all default parameters suggested in [YOLOv5 repo](https://github.com/ultralytics/yolov5). **Test mAP@.5: 0.678**.
+- [model02](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model02): increased image size from 640 to 1280. **Test mAP@.5: 0.711**.
+- [model03](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model03): here I've done lots of tweaking by numerous runs with different optimizers, learning rates, regularization strength, augmentations and even tried heavier version of YOLOv5 (which didn't help). I've also increased image size to 1500. **Test mAP@.5:**.
 
 **Validation set mAP@.5 by model vs epoch**
 <br><img src="pics/validation_map.png" width="250" height="300"><br>
 
-Adam optimizer and mixup augmentation appeared to be the most deteriorating non-default parameters, while mosaic augmentation and high image resolution gave the most boost to accuracy. As was expected, cyclists became a bottleneck for mAP.
+**Key insights:**
+- adam optimizer and mixup augmentation appeared to be the most deteriorating non-default parameters
+- mosaic augmentation and higher training resolution gave the most boost to accuracy
+- it was always better to do inference on original resolution regardless of what resolution was set during training
+
+As was expected, cyclists became a bottleneck for mAP.
 <br>**Precision-Recall curve (model03)**
 <br><img src="runs/val/model03/PR_curve.png" width="550" height="380"><br>
 **Confusion matrix (model03)**
