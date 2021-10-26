@@ -1,10 +1,10 @@
-weights: /workspace/pretrained-models/yolov5m.pt
+weights: /workspace/pretrained-models/yolov5l.pt
 cfg: ''
 data: data/dataset.yaml
 hyp: hyp.yaml
-epochs: 30
-batch_size: 10
-imgsz: 1500
+epochs: 21
+batch_size: 8
+imgsz: 1280
 rect: false
 resume: false
 nosave: false

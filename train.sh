@@ -1,10 +1,10 @@
 python /workspace/yolov5/train.py \
-    --weights /workspace/pretrained-models/yolov5m.pt \
+    --weights /workspace/pretrained-models/yolov5l.pt \
     --data data/dataset.yaml \
     --hyp hyp.yaml \
-    --epochs 30 \
-    --batch-size 10 \
-    --imgsz 1500 \
+    --epochs 21 \
+    --batch-size 8 \
+    --imgsz 1280 \
     --device 0 \
     --workers 4 \
     --save-period 2 \
