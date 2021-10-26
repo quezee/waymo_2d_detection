@@ -1,6 +1,6 @@
 # Object Detection in an Urban Environment
 Here you can see object detection pipeline using data from [Waymo Real-time 2D Detection](https://waymo.com/open/challenges/2021/real-time-2d-prediction/) (only the first 100 training TFR files, amounting to 94 GB) as part of my [Self-Driving Nanodegree](https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd0013).<br>
-I've tried [Tensorflow OD API](https://github.com/tensorflow/models/tree/master/research/object_detection) and [Pytorch's Detectron2](https://github.com/facebookresearch/detectron2) but ultimately decided to go with [Ultralytics' YOLOv5](https://github.com/ultralytics/yolov5) due to its superiority in terms of both accuracy and speed.
+Initially I've tried to approach this task with RetinaNet implementations from [Tensorflow OD API](https://github.com/tensorflow/models/tree/master/research/object_detection) and [Pytorch's Detectron2](https://github.com/facebookresearch/detectron2), but ultimately decided to go with [Ultralytics' YOLOv5](https://github.com/ultralytics/yolov5) due to its superiority in terms of both accuracy and speed.
 
 ### Prerequisites
 To launch train/test pipeline you are expected to have aforementioned 100 TFR files in `/mnt/waymo_od` on your machine.<br>
@@ -33,23 +33,25 @@ With this approach I got the following class-split distribution:
 
 ## Training runs
 All model iterations were trained with frozen backbone and tested on original 1280x1920 resolution.<br>
-For almost all runs I used YOLOv5m (medium sized) version of the model. I also tried YOLOv5m6 once, but score happened to be lower.<br>
-My GPU was GeForce RTX 3060 TI (8Gb).
-- [model01](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model01): baseline run with all default parameters suggested in [YOLOv5 repo](https://github.com/ultralytics/yolov5). **Test mAP@.5: 0.678**.
-- [model02](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model02): increased image size from 640 to 1280. **Test mAP@.5: 0.711**.
-- [model03](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model03): here I've done lots of tweaking by numerous runs with different optimizers, learning rates, regularization strength, augmentations and even tried heavier version of YOLOv5 (which didn't help). I've also increased image size to 1500. **Test mAP@.5:**.
+For majority of runs I used YOLOv5m (medium sized) version of the model.<br>
+I tried to keep all runs within 6 hours of training. My GPU was GeForce RTX 3060 TI (8Gb).
+- [model01](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model01): YOLOv5m; baseline run with all default parameters suggested in [YOLOv5 repo](https://github.com/ultralytics/yolov5). **Test mAP@.5: 0.678**.
+- [model02](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model02): YOLOv5m; increased image size from 640 to 1280. **Test mAP@.5: 0.711**.
+- [model03](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model03): YOLOv5l; here I've done lots of tweaking by numerous runs with different hyperparameters, augmentations and input resolutions. Improvement was achieved only by moving to heavier version of YOLOv5, lowering learning rate and increasing weight decay. **Test mAP@.5: 0.722**.
 
-**Validation set mAP@.5 by model vs epoch**
-<br><img src="pics/validation_map.png" width="250" height="300"><br>
+**Validation losses improvement by consecutive runs**
+<br><img src="pics/val_losses.png" width="600" height="250"><br>
 
 **Key insights:**
 - adam optimizer and mixup augmentation appeared to be the most deteriorating non-default parameters
+- unfreezing more/less layers was deteriorating too (in terms of 6 hours time limit)
 - mosaic augmentation and higher training resolution gave the most boost to accuracy
 - it was always better to do inference on original resolution regardless of what resolution was set during training
+- YOLO versions pretrained on 1280 resolution performed worse (in terms of loss/metrics) than those pretrained on 640
 
 As was expected, cyclists became a bottleneck for mAP.
 <br>**Precision-Recall curve (model03)**
-<br><img src="runs/val/model03/PR_curve.png" width="550" height="380"><br>
+<br><img src="runs/val/model03/PR_curve.png" width="550" height="350"><br>
 **Confusion matrix (model03)**
 <br><img src="runs/val/model03/confusion_matrix.png" width="650" height="500"><br>
 I've tried to fight it by tuning focal loss gamma (to impose more weight on cyclist objects), but it didn't help.<br>
