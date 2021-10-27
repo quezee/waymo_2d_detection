@@ -39,8 +39,17 @@ I tried to keep all runs within 6 hours of training. My GPU was GeForce RTX 3060
 - [model02](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model02): YOLOv5m; increased image size from 640 to 1280. **Test mAP@.5: 0.711**.
 - [model03](https://github.com/quezee/nd013c1_yolo/tree/master/runs/train/model03): YOLOv5l; here I've done lots of tweaking by numerous runs with different hyperparameters, augmentations and input resolutions. Improvement was achieved only by moving to heavier version of YOLOv5, lowering learning rate and increasing weight decay. **Test mAP@.5: 0.722**.
 
+Detailed list of modifications made in final model (relative to initial one):
+- **input resolution**: 640 -> 1280. To reduce information loss resulting from default resizing.
+- **architecture**: YOLOv5m -> YOLOv5l. I couldn't beat model02 score by any hyperparameter tuning, only moving to larger architecture helped a bit.
+- **learning rate**: 0.01 -> 0.002, **weight decay**: 0.0005 -> 0.005. To stabilize learning curve and prevent early overfitting of larger architecture.
+
+**Training losses improvement by consecutive runs**
+<br><img src="pics/train_losses.png" width="600" height="250"><br>
 **Validation losses improvement by consecutive runs**
 <br><img src="pics/val_losses.png" width="600" height="250"><br>
+
+You can see that the final model (red curve) barely outruns the previous one in terms of training loss, but does much better on validation.
 
 **Key insights:**
 - adam optimizer and mixup augmentation appeared to be the most deteriorating non-default parameters
