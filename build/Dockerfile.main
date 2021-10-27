@@ -21,15 +21,9 @@ RUN pip3 install \
     torchvision==0.10.0+cu111 \
     -f https://download.pytorch.org/whl/torch_stable.html
 
-RUN git clone https://github.com/ultralytics/yolov5
-
 RUN git clone https://github.com/gdlg/simple-waymo-open-dataset-reader.git && \
     cd simple-waymo-open-dataset-reader && pip3 install .
 
-RUN mkdir pretrained-models && \
-    wget -O pretrained-models/yolov5m.pt https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5m.pt && \
-    wget -O pretrained-models/yolov5l.pt https://github.com/ultralytics/yolov5/releases/download/v6.0/yolov5l.pt
-
-ENV PYTHONPATH "${PYTHONPATH}:/workspace:/workspace/yolov5"
+ENV PYTHONPATH "${PYTHONPATH}:/workspace/project/yolov5"
 
 ENTRYPOINT ["jupyter-notebook", "--allow-root", "--ip=0.0.0.0"]

@@ -1,4 +1,4 @@
-python /workspace/yolov5/val.py \
+python yolov5/val.py \
     --data data/dataset.yaml \
     --weights runs/train/model03/weights/best.pt \
     --batch-size 10 \
@@ -8,5 +8,5 @@ python /workspace/yolov5/val.py \
     --task test \
     --device 0 \
     --verbose \
-    --project /workspace/project/runs/val \
+    --project runs/val \
     --name model03
